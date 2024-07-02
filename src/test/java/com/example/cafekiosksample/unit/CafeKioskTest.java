@@ -2,10 +2,13 @@ package com.example.cafekiosksample.unit;
 
 import com.example.cafekiosksample.unit.beverages.Americano;
 import com.example.cafekiosksample.unit.beverages.Latte;
+import com.example.cafekiosksample.unit.order.Order;
 import net.bytebuddy.description.type.TypeDescription;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.text.Style;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -79,6 +82,48 @@ class CafeKioskTest {
         cafeKiosk.clear();
         assertThat(cafeKiosk.getCart()).isEmpty();
     }
+
+    /*
+    과연 항상 영업 시간에 테스트가 통과되는가를 생각해봐야함.
+    지금 오전 12시인데 영업시간이 9시부터 10시라면 테스트가 통과되지 않을 것이다.
+    그러므로 영업시간을 고려한 테스트를 작성해야한다.
+     */
+    @Test
+    void createOrderTest() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        cafeKiosk.add(americano);
+
+        Order order = cafeKiosk.checkout();
+        assertThat(order.getBeverages()).hasSize(1);
+        assertThat(order.getBeverages().get(0)).isEqualTo(americano);
+    }
+
+    @Test
+    void createOrderWithCurrentTime() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        cafeKiosk.add(americano);
+
+        Order order = cafeKiosk.checkout(LocalDateTime.of(2024, 7, 3, 11, 30, 0));
+        assertThat(order.getBeverages()).hasSize(1);
+        assertThat(order.getBeverages().get(0)).isEqualTo(americano);
+    }
+
+    @Test
+    void createOrderWithCurrentTimeClosed() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        cafeKiosk.add(americano);
+
+        assertThatThrownBy(() -> cafeKiosk.checkout(LocalDateTime.of(2024, 7, 3, 23, 30, 0)))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("The cafe is closed now");
+    }
+
 
 
 

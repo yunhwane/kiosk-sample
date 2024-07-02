@@ -10,6 +10,8 @@ import java.util.List;
 public class CafeKiosk {
 
     private final List<Beverage> cart = new ArrayList<>();
+    public static final LocalDateTime OPENING_TIME = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 10, 0);
+    public static final LocalDateTime CLOSING_TIME = LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 22, 0);
 
     public void add(Beverage beverage) {
         cart.add(beverage);
@@ -54,10 +56,28 @@ public class CafeKiosk {
     }
 
     public Order checkout() {
-        Order order = new Order(LocalDateTime.now(), cart);
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        if (currentTime.isBefore(OPENING_TIME) || currentTime.isAfter(CLOSING_TIME)) {
+            throw new IllegalStateException("The cafe is closed now");
+        }
+
+        Order order = new Order(currentTime, cart);
         System.out.println("Order placed at " + order.getOrderTime());
         return order;
     }
+
+    public Order checkout(LocalDateTime currentTime) {
+
+        if (currentTime.isBefore(OPENING_TIME) || currentTime.isAfter(CLOSING_TIME)) {
+            throw new IllegalStateException("The cafe is closed now");
+        }
+
+        Order order = new Order(currentTime, cart);
+        System.out.println("Order placed at " + order.getOrderTime());
+        return order;
+    }
+
 
     public List<Beverage> getCart() {
         return cart;
