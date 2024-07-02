@@ -16,6 +16,21 @@ public class CafeKiosk {
         System.out.println(beverage.name() + " added to the cart");
     }
 
+    public void add(Beverage beverage, int quantity) {
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity should be greater than 0");
+        }
+
+
+        for (int i = 0; i < quantity; i++) {
+            cart.add(beverage);
+        }
+
+        System.out.println(beverage.name() + " added to the cart " + quantity + " times");
+    }
+
+
     public void remove(Beverage beverage) {
         cart.remove(beverage);
         System.out.println(beverage.name() + " removed from the cart");
