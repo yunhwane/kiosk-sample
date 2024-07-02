@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import javax.swing.text.Style;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CafeKioskTest {
@@ -30,6 +31,29 @@ class CafeKioskTest {
         assertThat(cafeKiosk.getCart()).hasSize(1);
         assertThat(cafeKiosk.getCart().get(0)).isEqualTo(americano);
     }
+
+    @Test
+    void add_multiple() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        // happy case
+        cafeKiosk.add(americano, 2);
+        assertThat(cafeKiosk.getCart()).hasSize(2);
+    }
+
+    @Test
+    void add_multiple_negative() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        // negative case
+        assertThatThrownBy(() -> cafeKiosk.add(americano, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Quantity should be greater than 0");
+    }
+
+
 
     @Test
     void remove() {
