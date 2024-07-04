@@ -45,14 +45,7 @@ public class CafeKiosk {
 
 
     public int calculateTotalCost() {
-        int totalCost = 0;
-
-        for (Beverage beverage : cart) {
-            totalCost += beverage.cost();
-        }
-
-        return totalCost;
-
+       return cart.stream().mapToInt(Beverage::cost).sum();
     }
 
     public Order checkout() {

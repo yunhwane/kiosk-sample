@@ -124,6 +124,18 @@ class CafeKioskTest {
                 .hasMessage("The cafe is closed now");
     }
 
+    @Test
+    void calculateTotalPrice() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+        Latte latte = new Latte();
+
+        cafeKiosk.add(americano);
+        cafeKiosk.add(latte);
+
+        assertEquals(9000, cafeKiosk.calculateTotalCost());
+    }
+
 
 
 
