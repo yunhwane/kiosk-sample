@@ -12,4 +12,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllBySellingStatusIn(List<SellingStatus> sellingStatuses);
+    List<Product> findAllByProductNumberIn(List<String> productNumbers);
 }
