@@ -1,0 +1,7 @@
+POST localhost:8081/api/v1/orders/new
+Content-Type: application/json
+
+
+{
+  "productNumbers": ["001", "002", "003"]
+}

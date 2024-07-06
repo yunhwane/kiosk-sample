@@ -5,7 +5,10 @@ import com.example.cafekiosksample.spring.domain.ProductType;
 import com.example.cafekiosksample.spring.domain.SellingStatus;
 import com.example.cafekiosksample.spring.dto.OrderCreateRequest;
 import com.example.cafekiosksample.spring.dto.OrderResponse;
+import com.example.cafekiosksample.spring.repository.OrderProductRepository;
+import com.example.cafekiosksample.spring.repository.OrderRepository;
 import com.example.cafekiosksample.spring.repository.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,21 @@ class OrderServiceTest {
     OrderService orderService;
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    OrderRepository orderRepository;
+    @Autowired
+    OrderProductRepository orderProductRepository;
+    /**
+     * 테스트 종료 후 데이터 초기화
+     */
+
+    @AfterEach
+    void tearDown() {
+        orderProductRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
+
+    }
 
     @Test
     @DisplayName("주문 리스트를 받아서 주문을 생성한다.")
